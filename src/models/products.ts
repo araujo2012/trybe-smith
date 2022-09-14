@@ -1,8 +1,8 @@
 import { ResultSetHeader } from 'mysql2';
 import connection from './connection';
-import { IProductAdded, IProductReturned } from '../interfaces/products';
+import { IProduct, IProductReturned } from '../interfaces/products';
 
-const newProduct = async (name: string, amount: number):Promise<IProductAdded> => {
+const newProduct = async (name: string, amount: number):Promise<IProduct> => {
   const query = 'INSERT INTO Trybesmith.Products (name, amount) VALUES (?, ?)';
   const [result] = await connection.execute<ResultSetHeader>(query, [name, amount]);
   return {
@@ -14,8 +14,8 @@ const newProduct = async (name: string, amount: number):Promise<IProductAdded> =
 
 const getAllProducts = async ():Promise<IProductReturned[]> => {
   const query = 'SELECT * FROM Trybesmith.Products';
-  const [result] = await connection.execute<IProductReturned[]>(query);
-  return result;
+  const [result] = await connection.execute(query);
+  return result as IProductReturned[];
 };
 
 export default {
